@@ -3,35 +3,35 @@ generator client {
 }
 
 datasource db {
-  provider = "postgresql"
+  provider = "mysql"
   url      = env("DATABASE_URL")
 }
 
 model User {
-  id           Int      @id @default(autoincrement())
+  id           Int        @id @default(autoincrement())
   firstname    String
   lastname     String
-  username     String   @unique
+  username     String     @unique
   password     String
-  email        String   @unique
+  email        String     @unique
   age          Int
   city         String
   role         String
   refreshToken String?
-  created_at   DateTime @default(now())
-  updated_at   DateTime @updatedAt
+  created_at   DateTime   @default(now())
+  updated_at   DateTime   @updatedAt
 
   answers    Answer[]
-  matches1   Match[]     @relation("MatchUser1")
-  matches2   Match[]     @relation("MatchUser2")
-  messages   Message[]   @relation("MessageSender")
+  matches1   Match[]    @relation("MatchUser1")
+  matches2   Match[]    @relation("MatchUser2")
+  messages   Message[]  @relation("MessageSender")
   preference Preference?
-  Swipe      Swipe[]     @relation("SwipeUser1")
+  Swipe      Swipe[]    @relation("SwipeUser1")
 }
 
 model Question {
-  id Int    @id @default(autoincrement())
-  content    String
+  id      Int      @id @default(autoincrement())
+  content String
 
   answers Answer[]
 }
@@ -42,14 +42,14 @@ model Answer {
   iduser     Int
   content    String?
 
-  question Question @relation(fields: [id], references: [id], onDelete: Cascade)
+  question Question @relation(fields: [idquestion], references: [id], onDelete: Cascade)
   user     User     @relation(fields: [iduser], references: [id], onDelete: Cascade)
 
   @@unique([iduser, idquestion])
 }
 
 model Match {
-  id      Int @id @default(autoincrement())
+  id      Int       @id @default(autoincrement())
   iduser1 Int
   iduser2 Int
 
@@ -72,13 +72,13 @@ model Message {
 }
 
 model Preference {
-  iduser        Int      @unique
+  iduser        Int     @unique
   rangelocation Int?
   agemin        Int?
   agemax        Int?
-  typerelations String[]
+  typerelations Json?
   orientation   String?
-  humour        String[]
+  humour        Json?
 
   user User @relation(fields: [iduser], references: [id], onDelete: Cascade)
 }

@@ -7,6 +7,7 @@
     "prisma:push": "prisma db push && node prisma/seed.js",
     "start": "npm run prisma:push && nodemon --config nodemon.json",
     "start:prod": "npm run prisma:push && node src/server.js",
+    "start:container": "npx prisma generate && npm start",
     "dev": "npm run prisma:push && nodemon --config nodemon.json"
   },
   "dependencies": {

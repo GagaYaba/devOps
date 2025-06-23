@@ -1,0 +1,50 @@
+version: '3.8'
+
+services:
+  mysql-docker:
+    image: mysql:latest
+    container_name: mysql-docker
+    environment:
+      MYSQL_ROOT_PASSWORD: root
+      MYSQL_DATABASE: database
+      MYSQL_USER: user
+      MYSQL_PASSWORD: user
+    expose:
+      - "3306"
+    volumes:
+      - mysql_data:/var/lib/mysql
+
+  phpmyadmin-docker:
+    image: phpmyadmin/phpmyadmin:latest
+    container_name: phpmyadmin-docker
+    depends_on:
+      - mysql-docker
+    environment:
+      PMA_HOST: mysql-docker
+      PMA_PORT: 3306
+      MYSQL_ROOT_PASSWORD: root
+    ports:
+      - "8080:80"
+
+  api:
+    build:
+      context: ./backend
+      dockerfile: Dockerfile
+    container_name: backend-api
+    depends_on:
+      - mysql-docker
+    ports:
+      - "3000:3000"
+    environment:
+      - PORT=3000
+      - DB_USER=root
+      - DB_PASSWORD=root
+      - DB_HOST=mysql-docker
+      - DB_PORT=3306
+      - DB_NAME=database
+      - DATABASE_URL=mysql://root:root@mysql-docker:3306/database
+      - ACCESS_TOKEN_SECRET=dDBhEp0gaqrF0S8rvQZBipv8fh9YlElQxTJriHj55zIS0iD4q6
+      - REFRESH_TOKEN_SECRET=UcZITM81QsyL5HVGeY48AxbscvwnQIO65wflWeTrREKIVEWu4L
+
+volumes:
+  mysql_data: {}
