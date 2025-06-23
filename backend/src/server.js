@@ -10,16 +10,16 @@ async function start() {
     while (!connected) {
         try {
             await prisma.$connect();
-            console.log('MySQL connecté via Prisma');
+            console.log('Database connecté via Prisma');
             connected = true;
         } catch (err) {
-            console.error('MySQL non joignable (mysql-docker:3306) ou DB non prête, nouvelle tentative dans 2s...');
+            console.error('Database non joignable ou DB non prête, nouvelle tentative dans 2s...');
             await wait(2000);
         }
     }
 
     const PORT = process.env.PORT || 3000;
-    app.listen(PORT, () => console.log(`Server running on port ${PORT}`));
+    app.listen(PORT, '0.0.0.0', () => console.log(`Server running on port ${PORT}`));
 }
 
 start();

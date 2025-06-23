@@ -35,16 +35,18 @@ services:
       - mysql-docker
     ports:
       - "3000:3000"
-    environment:
-      - PORT=3000
-      - DB_USER=root
-      - DB_PASSWORD=root
-      - DB_HOST=mysql-docker
-      - DB_PORT=3306
-      - DB_NAME=database
-      - DATABASE_URL=mysql://root:root@mysql-docker:3306/database
-      - ACCESS_TOKEN_SECRET=dDBhEp0gaqrF0S8rvQZBipv8fh9YlElQxTJriHj55zIS0iD4q6
-      - REFRESH_TOKEN_SECRET=UcZITM81QsyL5HVGeY48AxbscvwnQIO65wflWeTrREKIVEWu4L
+    # environment:
+    #   - PORT=3000
+    #   - DB_USER=root
+    #   - DB_PASSWORD=root
+    #   - DB_HOST=mysql-docker
+    #   - DB_PORT=3306
+    #   - DB_NAME=database
+    #   - DATABASE_URL=file:./database.sqlite
+    #   - ACCESS_TOKEN_SECRET=dDBhEp0gaqrF0S8rvQZBipv8fh9YlElQxTJriHj55zIS0iD4q6
+    #   - REFRESH_TOKEN_SECRET=UcZITM81QsyL5HVGeY48AxbscvwnQIO65wflWeTrREKIVEWu4L
+    env_file:
+      - .env
 
 volumes:
   mysql_data: {}
